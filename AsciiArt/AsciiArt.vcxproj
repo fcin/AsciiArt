@@ -131,6 +131,10 @@
     <ClInclude Include="src\imageSavers\TxtImageSaver.h" />
     <ClInclude Include="src\Settings.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="data\angryFace.bmp" />
+    <Image Include="data\letterW.bmp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
