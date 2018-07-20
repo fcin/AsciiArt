@@ -6,4 +6,9 @@ struct Image
 	int size;
 	int width;
 	int height;
+
+	~Image()
+	{
+		delete[] pixels;
+	}
 };
