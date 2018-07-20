@@ -120,12 +120,14 @@
     <ClCompile Include="src\AsciiImageConverter.cpp" />
     <ClCompile Include="src\imageLoaders\BmpLoader.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\Settings.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AsciiImageConverter.h" />
     <ClInclude Include="src\Image.h" />
     <ClInclude Include="src\imageLoaders\BmpLoader.h" />
     <ClInclude Include="src\imageLoaders\ImageLoader.h" />
+    <ClInclude Include="src\Settings.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

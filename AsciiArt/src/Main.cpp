@@ -7,21 +7,33 @@
 #include <cstdio>
 #include <cwchar>
 #include <windows.h>
+#include "Settings.h"
 
-int main()
+void setupConsole(int width, int height, int fontSize);
+
+int main(int argc, char* argv[])
 {
-	CONSOLE_FONT_INFOEX cfi;
-	cfi.cbSize = sizeof(cfi);
-	cfi.nFont = 0;
-	cfi.dwFontSize.X = 12;
-	cfi.dwFontSize.Y = 12;
-	cfi.FontFamily = FF_DONTCARE;
-	cfi.FontWeight = FW_NORMAL;
-	std::wcscpy(cfi.FaceName, L"Consolas"); // Choose your font
-	SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
-	MoveWindow(GetConsoleWindow(), 100, 100, 1200, 600, TRUE);
+	Settings settings(argv, argc);
 
-	BmpLoader loader("C:\\Users\\GreenScreen\\Desktop\\test.bmp");
+	std::string result = settings.loadSettings();
+
+	if (result.compare("") != 0)
+	{
+		std::cout << result.c_str() << std::endl;
+		std::cin.get();
+		return 0;
+	}
+
+	if (!settings.hasSetting("src"))
+	{
+		std::cout << "You did not provid source file path. Use '-src' to specify source file path." << std::endl;
+		std::cin.get();
+		return 0;
+	}
+
+	//setupConsole(1200, 600, 12);
+
+	BmpLoader loader(settings.getSetting("src"));
 	Image image = loader.loadImage();
 
 	AsciiImageConverter converter;
@@ -47,4 +59,18 @@ int main()
 
 	std::cin.get();
 	return 0;
+}
+
+void setupConsole(int width, int height, int fontSize)
+{
+	CONSOLE_FONT_INFOEX cfi;
+	cfi.cbSize = sizeof(cfi);
+	cfi.nFont = 0;
+	cfi.dwFontSize.X = fontSize;
+	cfi.dwFontSize.Y = fontSize;
+	cfi.FontFamily = FF_DONTCARE;
+	cfi.FontWeight = FW_NORMAL;
+	std::wcscpy(cfi.FaceName, L"Consolas");
+	SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
+	MoveWindow(GetConsoleWindow(), 100, 100, width, height, TRUE);
 }
