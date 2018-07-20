@@ -1,13 +1,15 @@
-#include<iostream>
-#include<vector>
-#include "AsciiImageConverter.h"
-#include "imageLoaders\ImageLoader.h"
-#include "imageLoaders\BmpLoader.h"
+#include <iostream>
+#include <vector>
 #include "Image.h"
 #include <cstdio>
 #include <cwchar>
 #include <windows.h>
+#include <algorithm>
 #include "Settings.h"
+#include "AsciiImageConverter.h"
+#include "imageLoaders\ImageLoader.h"
+#include "imageLoaders\BmpLoader.h"
+#include "imageSavers\TxtImageSaver.h"
 
 void setupConsole(int width, int height, int fontSize);
 
@@ -19,19 +21,17 @@ int main(int argc, char* argv[])
 
 	if (result.compare("") != 0)
 	{
-		std::cout << result.c_str() << std::endl;
+		std::cout << "ERROR: " << result.c_str() << std::endl;
 		std::cin.get();
 		return 0;
 	}
 
 	if (!settings.hasSetting("src"))
 	{
-		std::cout << "You did not provid source file path. Use '-src' to specify source file path." << std::endl;
+		std::cout << "You did not provide source file path. Use '-src' to specify source file path." << std::endl;
 		std::cin.get();
 		return 0;
 	}
-
-	//setupConsole(1200, 600, 12);
 
 	BmpLoader loader(settings.getSetting("src"));
 	Image image = loader.loadImage();
@@ -39,14 +39,8 @@ int main(int argc, char* argv[])
 	AsciiImageConverter converter;
 	Image ascii = converter.toAscii(image);
 
-	//for (int y = 0; y < image.height; y++)
-	//{
-	//	for (int x = 0; x < image.width; x++)
-	//	{
-	//		std::cout << std::hex << +(unsigned char)image.pixels[y * image.width + x] << " ";
-	//	}
-	//	std::cout << std::endl;
-	//}
+	int fontSize = std::max<int>(std::floor(1200 / (ascii.width * 1.5)), 1);
+	setupConsole(1200, 600, fontSize);
 
 	for (int y = 0; y < ascii.height; y++)
 	{
@@ -55,6 +49,14 @@ int main(int argc, char* argv[])
 			std::cout << ascii.pixels[y * ascii.width + x];
 		}
 		std::cout << std::endl;
+	}
+
+	if (settings.hasSetting("out"))
+	{
+		TxtImageSaver saver;
+		saver.save(settings.getSetting("out"), ascii);
+
+		std::cout << "Image saved in " << settings.getSetting("out").c_str() << std::endl;
 	}
 
 	std::cin.get();
@@ -74,3 +76,12 @@ void setupConsole(int width, int height, int fontSize)
 	SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
 	MoveWindow(GetConsoleWindow(), 100, 100, width, height, TRUE);
 }
+
+//for (int y = 0; y < image.height; y++)
+//{
+//	for (int x = 0; x < image.width; x++)
+//	{
+//		std::cout << std::hex << +(unsigned char)image.pixels[y * image.width + x] << " ";
+//	}
+//	std::cout << std::endl;
+//}

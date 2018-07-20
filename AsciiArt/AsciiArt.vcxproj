@@ -119,6 +119,7 @@
   <ItemGroup>
     <ClCompile Include="src\AsciiImageConverter.cpp" />
     <ClCompile Include="src\imageLoaders\BmpLoader.cpp" />
+    <ClCompile Include="src\imageSavers\TxtImageSaver.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Settings.cpp" />
   </ItemGroup>
@@ -127,6 +128,7 @@
     <ClInclude Include="src\Image.h" />
     <ClInclude Include="src\imageLoaders\BmpLoader.h" />
     <ClInclude Include="src\imageLoaders\ImageLoader.h" />
+    <ClInclude Include="src\imageSavers\TxtImageSaver.h" />
     <ClInclude Include="src\Settings.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
